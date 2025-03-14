@@ -10,7 +10,7 @@ f2 = 500
 f3 = 200
 
 t1=np.arange(0,T,1/f1)
-t2=np.arange(0,T,1/f2)
+t2=np.arange(0,T,1/f2) # test gita
 t3=np.arange(0,T,1/f3)
 
 x1= A*np.sin(2*np.pi*f*t1)
