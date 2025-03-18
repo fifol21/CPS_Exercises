@@ -35,3 +35,4 @@ print(f"x*x_s - {result_3}")
 
 
 
+

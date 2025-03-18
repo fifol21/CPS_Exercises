@@ -20,7 +20,7 @@ for i in range(N):
     plt.plot(A[i,:],"bo", label=f"wiersz {i+1} A")
     plt.plot(S[:,i],"r--", label=f"kolumna{i+1} S")
     plt.legend()
-    plt.pause(0.6)
+    plt.pause(0.1)
     plt.close()
 plt.show()
 
