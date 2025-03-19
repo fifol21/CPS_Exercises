@@ -16,7 +16,7 @@ A = DCT_matrix(N)
 S = A.T
 
 for i in range(N):
-     plt.figure()
+    plt.figure()
     plt.plot(A[i,:],"bo", label=f"wiersz {i+1} A")
     plt.plot(S[:,i],"r--", label=f"kolumna{i+1} S")
     plt.legend()
