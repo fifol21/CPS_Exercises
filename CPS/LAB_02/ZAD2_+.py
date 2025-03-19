@@ -23,7 +23,7 @@ X= A @ x
 x_s = S @ X
 
 result_3 = np.allclose(x , x_s, atol=1e-10)
-print(f"x*x_s - {result_3}")
+print(f"x*x_s - poprawna rekonstrukcja - {result_3}")
 
 def DCT_matrix_corrupted(N):
     A=np.zeros((N,N))
@@ -38,7 +38,7 @@ A_2 = DCT_matrix_corrupted(N)
 S_2=A_2.T # IDCT
 I_2 = np.eye(N)
 result_5 = np.allclose(S_2 @ A_2 , I_2 , atol=1e-10)
-print(f"S_2*A_2 - {result_5}")
+print(f"A*S=I?- zepsuta- {result_5}")
 ############################################
 x_2=np.random.randn(N)
 X_2= A_2 @ x_2
@@ -46,4 +46,4 @@ X_2= A_2 @ x_2
 x_s_2 = S_2 @ X_2
 
 result_4 = np.allclose(x_2 , x_s_2, atol=1e-10)
-print(f"x_2*x_s_2 - {result_4}")
+print(f"x_2*x_s_2- poprawnie odtworzona? - {result_4}")

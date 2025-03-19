@@ -16,13 +16,17 @@ def check_orto(A):
         I = np.eye(rows)
         return np.allclose(A.T @ A , I , atol=1e-10)
 
-N = 20;
+N = 20
 A = DCT_matrix(N)
+
+
 ############################################
 S=A.T # IDCT
 I = np.eye(N)
 result_2 = np.allclose(S @ A , I , atol=1e-10)
-print(f"S*A - {result_2}")
+print(f"A*S=I - {result_2}")
+
+
 ############################################
 x=np.random.randn(N)
 X= A @ x
@@ -30,7 +34,7 @@ X= A @ x
 x_s = S @ X
 
 result_3 = np.allclose(x , x_s, atol=1e-10)
-print(f"x*x_s - {result_3}")
+print(f"x*x_s - poprawna rekonstrukcja ? - {result_3}")
 
 
 

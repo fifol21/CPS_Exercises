@@ -4,7 +4,7 @@ from ZAD1 import DCT_matrix
 N = 100
 fs = 1000
 
-f1, f2, f3 = 50, 100, 150 #100 - f2
+f1, f2, f3 = 50, 105, 150 #100 - f2
 f1_alt , f2_alt, f3_alt = 52.5, 107.5, 152.5
 A1, A2 , A3 = 50 , 100, 150
 t= np.arange(N)/fs
@@ -16,7 +16,7 @@ A = DCT_matrix(N)
 S = A.T
 
 for i in range(N):
-    plt.figure()
+     plt.figure()
     plt.plot(A[i,:],"bo", label=f"wiersz {i+1} A")
     plt.plot(S[:,i],"r--", label=f"kolumna{i+1} S")
     plt.legend()
@@ -28,9 +28,9 @@ f = (np.arange(N) * fs) / (2 * N)
 y = A @ x
 y_alt = A @ x_alt
 plt.subplot(2, 1, 1)
-plt.stem(f,np.abs(y))#wyswietlanie ( sygnalu w dziedznie czestotliowsc) do polecnia zmiana na 105
+plt.stem(f,y)#wyswietlanie dla wartosci 50,100 itp
 plt.subplot(2, 1, 2)
-plt.stem(f,np.abs(y_alt))
+plt.stem(f,y_alt) # wyswietanie dla wartpsci o +2.5
 #ogarnac podpisy
 plt.show()
 

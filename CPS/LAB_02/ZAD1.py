@@ -16,9 +16,7 @@ def check_orto(A):
         I = np.eye(rows)
         return np.allclose(A.T @ A , I , atol=1e-10)
 
-N = 20;
+N = 20
 A = DCT_matrix(N)
 result = check_orto(A)
-print(result)
-
-
+print(f"Czy macierz jest ortonormalna? {result}")
