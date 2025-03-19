@@ -14,7 +14,7 @@ def check_orto(A):
         return False
     else:
         I = np.eye(rows)
-        return np.allclose(A.T @ A , I , atol=1e-10)
+        return np.allclose(A.T @ A , I , atol=1e-10) # to ze jest ortonormalna daje nam ze mamy ladne odzworowanie DCT i IDCT i nie ma straty energi
 
 N = 20
 A = DCT_matrix(N)

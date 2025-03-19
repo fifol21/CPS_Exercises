@@ -29,9 +29,10 @@ y = A @ x
 y_alt = A @ x_alt
 plt.subplot(2, 1, 1)
 plt.stem(f,y)#wyswietlanie dla wartosci 50,100 itp
+# jeśli częstotliwość sygnału nie pokrywa się dokładnie z funkcjami bazowymi, współczynniki się rozmywają.
+#Rekonstrukcja jest możliwa, bo zbiór funkcji bazowych jest kompletny. dlatego dla dodania +2.5 hz mamy rozmycie, DCT sprawdza jak bardzo te sygnal pasuje do kazdej z tych funckji
 plt.subplot(2, 1, 2)
-plt.stem(f,y_alt) # wyswietanie dla wartpsci o +2.5
-#ogarnac podpisy
+plt.stem(f,y_alt) # wyswietanie dla wartpsci o +2.5 musi nastapic dopasownie do sasiednich funkcji bazowych i nastepuje rozmycie na sasiednie czestotwlisci powod - brak skorelowania z zadna funckja bazowa
 plt.show()
 
 values = y[1:N]

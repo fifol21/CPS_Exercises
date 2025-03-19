@@ -15,9 +15,11 @@ norm = np.linalg.norm(A, axis=1)
 result_1 = np.allclose(norm, 1, atol=1e-10)
 print(f"ortonormality? {result_1}")
 ###
+
 result_2 = np.allclose(A @ S ,I, atol=1e-10)
 print(f"A*S=I? {result_2}")
 ###
+
 X= A @ x
 
 x_s = S @ X
@@ -34,12 +36,16 @@ def DCT_matrix_corrupted(N):
     return A
 
 A_2 = DCT_matrix_corrupted(N)
-############################################
+############################################################
+
+
 S_2=A_2.T # IDCT
 I_2 = np.eye(N)
 result_5 = np.allclose(S_2 @ A_2 , I_2 , atol=1e-10)
 print(f"A*S=I?- zepsuta- {result_5}")
 ############################################
+
+
 x_2=np.random.randn(N)
 X_2= A_2 @ x_2
 

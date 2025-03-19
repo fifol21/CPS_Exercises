@@ -19,7 +19,7 @@ for n1 in samples_found:
     fragments.append(samples[n1:n2])
 
 print(fragments)
-plt.figure(figsize=(17,17))
+plt.figure(figsize=(15,15))
 for k in range(M):
     x_k = fragments[k]
     y_k = DCT_matrix(N) @ x_k
