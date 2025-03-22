@@ -20,7 +20,7 @@ for i in range(N):
     plt.plot(A[i,:],"bo", label=f"wiersz {i+1} A")
     plt.plot(S[:,i],"r--", label=f"kolumna{i+1} S")
     plt.legend()
-    plt.pause(0.06)
+    plt.pause(0.02)
     plt.close()
 plt.show()
 
@@ -28,7 +28,7 @@ f = (np.arange(N) * fs) / (2 * N)
 y = A @ x
 y_alt = A @ x_alt
 plt.subplot(2, 1, 1)
-plt.stem(f,y,linefmt='b-')
+plt.stem(f,y,linefmt='b-',  basefmt="black")
 plt.grid(True)
 plt.xticks(np.arange(0, fs / 2, step=50))
 plt.title("DCT_perfect index")
@@ -36,7 +36,7 @@ plt.ylabel("index")
 plt.xlabel("f")
 
 plt.subplot(2, 1, 2)
-plt.stem(f,y_alt,linefmt='r-')
+plt.stem(f,y_alt,linefmt='r-',  basefmt="black")
 plt.grid(True)
 plt.xticks(np.arange(0, fs / 2, step=50))
 plt.title("DCT_moved index")

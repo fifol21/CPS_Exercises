@@ -23,12 +23,14 @@ plt.figure(figsize=(15,15))
 for k in range(M):
     x_k = fragments[k]
     y_k = DCT_matrix(N) @ x_k
-    freqs = np.linspace(0, fs, N)
+    freqs = np.linspace(0, fs/2, N)
 
     plt.subplot(M,2,2*k+1)
+    plt.title("time domain")
     plt.plot(np.arange(N), x_k)
 
     plt.subplot(M,2,2*k+2)
+    plt.title("frequency domain")
     plt.plot(freqs, y_k)
 
 plt.show()
