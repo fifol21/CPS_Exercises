@@ -20,7 +20,7 @@ for i in range(N):
     plt.plot(A[i,:],"bo", label=f"wiersz {i+1} A")
     plt.plot(S[:,i],"r--", label=f"kolumna{i+1} S")
     plt.legend()
-    plt.pause(0.1)
+    plt.pause(0.06)
     plt.close()
 plt.show()
 
@@ -28,12 +28,24 @@ f = (np.arange(N) * fs) / (2 * N)
 y = A @ x
 y_alt = A @ x_alt
 plt.subplot(2, 1, 1)
-plt.stem(f,y)#wyswietlanie dla wartosci 50,100 itp
-# jeśli częstotliwość sygnału nie pokrywa się dokładnie z funkcjami bazowymi, współczynniki się rozmywają.
-#Rekonstrukcja jest możliwa, bo zbiór funkcji bazowych jest kompletny. dlatego dla dodania +2.5 hz mamy rozmycie, DCT sprawdza jak bardzo te sygnal pasuje do kazdej z tych funckji
+plt.stem(f,y,linefmt='b-')
+plt.grid(True)
+plt.xticks(np.arange(0, fs / 2, step=50))
+plt.title("DCT_perfect index")
+plt.ylabel("index")
+plt.xlabel("f")
+
 plt.subplot(2, 1, 2)
-plt.stem(f,y_alt) # wyswietanie dla wartpsci o +2.5 musi nastapic dopasownie do sasiednich funkcji bazowych i nastepuje rozmycie na sasiednie czestotwlisci powod - brak skorelowania z zadna funckja bazowa
+plt.stem(f,y_alt,linefmt='r-')
+plt.grid(True)
+plt.xticks(np.arange(0, fs / 2, step=50))
+plt.title("DCT_moved index")
+plt.ylabel("index")
+plt.xlabel("f")
+plt.tight_layout()
+
 plt.show()
+
 
 values = y[1:N]
 tol = 1e-6
