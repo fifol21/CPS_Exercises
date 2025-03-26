@@ -18,7 +18,7 @@ X= A @ x
 x_s = S @ X
 
 result_3 = np.allclose(x , x_s, atol=1e-12)
-print(f"x*x_s - poprawna rekonstrukcja ? - {result_3}")
+print(f"x*x_s - poprawna rekonstrukcja? - {result_3}")
 
 
 

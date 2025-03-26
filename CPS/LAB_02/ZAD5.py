@@ -7,6 +7,7 @@ from scipy.io import wavfile
 # Wczytanie sygnału
 file_name = "mowa.wav"
 fs, x = wavfile.read(file_name)
+x = x.flatten()
 
 plt.plot(x)
 plt.title("Wczytany sygnał")
@@ -67,7 +68,6 @@ c_denoised[freq_index-15:freq_index+15] = 0
 
 y_denoised = idct(c_denoised, axis=0, norm='ortho')
 
-y_denoised = y_denoised / np.max(np.abs(y_denoised))
 
 plt.stem(y_denoised)
 plt.title("Sygnał po usunięciu zakłócenia")

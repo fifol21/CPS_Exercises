@@ -4,7 +4,7 @@ from ZAD1 import DCT_matrix
 N = 100
 fs = 1000
 
-f1, f2, f3 = 50, 105, 150 #100 - f2
+f1, f2, f3 = 50, 100, 150 #100 - f2
 f1_alt , f2_alt, f3_alt = 52.5, 107.5, 152.5
 A1, A2 , A3 = 50 , 100, 150
 t= np.arange(N)/fs
