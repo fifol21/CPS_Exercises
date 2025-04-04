@@ -9,8 +9,8 @@ f1_alt , f2_alt, f3_alt = 52.5, 107.5, 152.5
 A1, A2 , A3 = 50 , 100, 150
 t= np.arange(N)/fs
 
-x= A1*np.sin(2*np.pi*f1*t)+A2*np.sin(2*np.pi*f2*t)+A3*np.sin(2*np.pi*f3*t)
-x_alt = A1*np.sin(2*np.pi*f1_alt*t)+A2*np.sin(2*np.pi*f2_alt*t)+A3*np.sin(2*np.pi*f3_alt*t)
+x= A1*np.cos(2*np.pi*f1*t)+A2*np.cos(2*np.pi*f2*t)+A3*np.cos(2*np.pi*f3*t)
+x_alt = A1*np.cos(2*np.pi*f1_alt*t)+A2*np.cos(2*np.pi*f2_alt*t)+A3*np.cos(2*np.pi*f3_alt*t)
 
 A = DCT_matrix(N)
 S = A.T

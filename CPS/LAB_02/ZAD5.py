@@ -9,7 +9,6 @@ file_name = "mowa.wav"
 fs, x = wavfile.read(file_name)
 x = x.flatten()
 
-plt.plot(x)
 plt.title("Wczytany sygnał")
 plt.show()
 print("Oryginalny sygnał")
@@ -18,12 +17,11 @@ sd.wait()
 
 # DCT całego sygnału
 c = dct(x, norm='ortho')
-c = c / np.max(np.abs(c))
-plt.stem(c)
+#c = c / np.max(np.abs(c))
 plt.title("DCT - x")
 plt.show()
 
-# 25% współczynników
+# zachowanie 25% najwyzszych wspolczynnikow - przytluminy dzwiek
 c_25 = np.zeros_like(c)
 c_25[:len(c)//4] = c[:len(c)//4]
 y_25 = idct(c_25, norm='ortho')
@@ -34,7 +32,7 @@ print("25% współczynników")
 sd.play(y_25, samplerate=fs)
 sd.wait()
 
-# 75% współczynników
+# 75% współczynników - metaliczny dźwięk
 c_75 = np.zeros_like(c)
 c_75[-len(c)*3//4:] = c[-len(c)*3//4:]
 y_75 = idct(c_75, norm='ortho')
@@ -54,14 +52,17 @@ x_noisy = x_noisy / np.max(np.abs(x_noisy))
 plt.stem(x_noisy)
 plt.title("Sygnał z zakłóceniem (250 Hz)")
 plt.show()
+
 print("Sygnał z zakłóceniem")
 sd.play(x_noisy, samplerate=fs)
 sd.wait()
 
+
 c_noisy = dct(x_noisy, axis=0, norm='ortho')
 
-# Indeks odpowiadający 250 Hz
 freq_index = int(250 * len(c_noisy) / fs)
+
+
 c_denoised = np.copy(c_noisy)
 c_denoised[freq_index-15:freq_index+15] = 0
 
@@ -69,9 +70,11 @@ c_denoised[freq_index-15:freq_index+15] = 0
 y_denoised = idct(c_denoised, axis=0, norm='ortho')
 
 
+
 plt.stem(y_denoised)
 plt.title("Sygnał po usunięciu zakłócenia")
 plt.show()
+
 print("Sygnał po filtracji")
 sd.play(y_denoised, fs)
 sd.wait()
