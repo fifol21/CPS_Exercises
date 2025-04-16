@@ -12,17 +12,17 @@ fs = 16000
 f_low, f_high = 1189, 1229
 
 # Convert to transfer function (analog filter)
-b_s, a_s = zpk2tf(z, p, k)
+b_s, a_s = zpk2tf(z, p, k) # do klasycznej postaci transmitancji
 
 # Frequency response of the analog filter
-w, h = freqz(b_s, a_s, worN=8000, fs=fs)
+w, h = freqz(b_s, a_s, worN=8000, fs=fs) # odpowiedz filtra
 
 # Plot analog filter response
 plt.figure()
 plt.plot(w, 20 * np.log10(abs(h)), label='Analog H(s)')
 plt.axvline(f_low, color='r', linestyle='--', label='f_low')
 plt.axvline(f_high, color='g', linestyle='--', label='f_high')
-plt.title('Characteristic amplitude-frequency of analog filter')
+plt.title('Characteristic amplitude-frequency of analog')
 plt.xlabel('Frequency (Hz)')
 plt.ylabel('Amplitude (dB)')
 plt.legend()
@@ -30,7 +30,7 @@ plt.grid()
 plt.show()
 
 # Convert analog filter to digital using bilinear transform
-b_z, a_z = bilinear(b_s, a_s, fs)
+b_z, a_z = bilinear(b_s, a_s, fs) # zmiana s na z dysktertna
 w_z, h_z = freqz(b_z, a_z, worN=8000, fs=fs)
 
 # Plot digital filter response
