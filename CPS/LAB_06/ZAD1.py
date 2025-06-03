@@ -14,8 +14,10 @@ f_low, f_high = 1189, 1229
 # Convert to transfer function (analog filter)
 b_s, a_s = zpk2tf(z, p, k) # do klasycznej postaci transmitancji
 
+
 # Frequency response of the analog filter
 w, h = freqz(b_s, a_s, worN=8000, fs=fs) # odpowiedz filtra
+
 
 # Plot analog filter response
 plt.figure()
@@ -29,9 +31,11 @@ plt.legend()
 plt.grid()
 plt.show()
 
+
 # Convert analog filter to digital using bilinear transform
 b_z, a_z = bilinear(b_s, a_s, fs) # zmiana s na z dysktertna
 w_z, h_z = freqz(b_z, a_z, worN=8000, fs=fs)
+
 
 # Plot digital filter response
 plt.figure()

@@ -22,14 +22,14 @@ lowcut = pilot_freq - bandwidth / 2
 highcut = pilot_freq + bandwidth / 2
 
 numtaps_pilot = 1001
-fir_pilot = firwin( numtaps=numtaps_pilot,cutoff=[lowcut, highcut],window='blackmanharris',pass_zero=False, fs=Fs) # blackman chyba tez bedzie ok, ale ten daje mniej zafalowan na zboczach
+fir_pilot = firwin(numtaps=numtaps_pilot,cutoff=[lowcut, highcut],window='blackmanharris',pass_zero=False, fs=Fs) # blackman chyba tez bedzie ok, ale ten daje mniej zafalowan na zboczach
 
 
 def plot_filter_response(fir, label, Fs):
     w, h = freqz(fir, worN=8000, fs=Fs)
     plt.plot(w, 20 * np.log10(np.abs(h) + 1e-10), label=label)
-    plt.xlabel(" [Hz]")
-    plt.ylabel(" [dB]")
+    plt.xlabel("[Hz]")
+    plt.ylabel("[dB]")
     plt.grid(True)
     plt.ylim(-100, 5)
 
