@@ -1,67 +1,83 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.io import wavfile
+import matplotlib.pyplot as plt
 
-def adpcm_encode(x, bits=2):
-    levels = 2 ** bits
-    step = np.std(x) / 2 # krok kwantyzacji jako polowa odchylenia standardowego
-    a = 0.9545
-    y_prev = 0 # prevoius
-    codes = []
+class SimpleADPCM:
+    def __init__(self, bitrate=32):
+        if bitrate == 16:
+            self.levels = 4
+        elif bitrate == 32:
+            self.levels = 16
+        else:
+            raise ValueError("Obsługiwane: 16 lub 32 kbps")
 
-    for sample in x:
-        pred = a * y_prev
-        diff = sample - pred
-        index = int(np.clip(np.round(diff / step + (levels / 2)), 0, levels - 1))
-        dq = (index - levels // 2) * step
-        codes.append(index)
-        y_prev = pred + dq
+        self.step = 1000.0    # krok kwantyzacji
+        self.pred = 0.0       # predyktor
 
-    return np.array(codes), step
+    def quantize(self, diff):
+        level = int(round((diff / self.step) + (self.levels - 1) / 2))
+        return max(0, min(self.levels - 1, level))
 
-def adpcm_decode(codes, step, bits=2):
-    levels = 2 ** bits
-    a = 0.9545
-    y_prev = 0
-    y = []
+    def dequantize(self, level):
+        return (level - (self.levels - 1) / 2) * self.step
 
-    for code in codes:
-        dq = (code - levels // 2) * step
-        y_curr = a * y_prev + dq
-        y.append(y_curr)
-        y_prev = y_curr
+    def encode(self, samples):
+        encoded = []
+        for s in samples:
+            diff = float(s) - self.pred
+            q = self.quantize(diff)
+            dq = self.dequantize(q)
 
-    return np.array(y)
+            self.pred += dq
+            self.pred = np.clip(self.pred, -32768, 32767)
 
-# Wczytaj sygnał
-fs, x = wavfile.read('DontWorryBeHappy.wav')
-x = x.astype(np.float64)
-if x.ndim > 1:
-    x = x[:, 0]  # tylko pierwszy kanał
+            # adaptacja kroku
+            self.step = 0.9 * self.step + 0.1 * abs(dq)
+            self.step = max(self.step, 1.0)
 
-# ADPCM 2-bit
-codes_2bit, step2 = adpcm_encode(x, bits=2)
-y_2bit = adpcm_decode(codes_2bit, step2, bits=2)
+            encoded.append(q)
+        return np.array(encoded, dtype=np.uint8)
 
-# ADPCM 4-bit
-codes_4bit, step4 = adpcm_encode(x, bits=4)
-y_4bit = adpcm_decode(codes_4bit, step4, bits=4)
+    def decode(self, encoded):
+        decoded = []
+        for q in encoded:
+            dq = self.dequantize(q)
+            s = self.pred + dq
+            s = np.clip(s, -32768, 32767)
+            self.pred = s
 
-# MSE
-mse_2bit = np.mean((x - y_2bit) ** 2)
-mse_4bit = np.mean((x - y_4bit) ** 2)
-print("MSE dla 2-bitowego ADPCM :", mse_2bit)
-print("MSE dla 4-bitowego ADPCM :", mse_4bit)
+            # adaptacja kroku
+            self.step = 0.9 * self.step + 0.1 * abs(dq)
+            self.step = max(self.step, 1.0)
 
-# Wykres
-plt.figure(figsize=(12, 6))
-plt.plot(x, label='Oryginalny', color='blue', alpha=0.5)
-plt.plot(y_2bit, label='ADPCM 2-bit', color='red', linestyle='--')
-plt.plot(y_4bit, label='ADPCM 4-bit', color='green', linestyle=':')
-plt.legend()
-plt.title('ADPCM - porównanie')
-plt.xlabel('Próbka')
-plt.ylabel('Amplituda')
-plt.grid(True)
-plt.tight_layout()
-plt.show()
+            decoded.append(int(s))
+        return np.array(decoded, dtype=np.int16)
+
+if __name__ == "__main__":
+    rate, data = wavfile.read("DontWorryBeHappy.wav")
+    if data.ndim > 1:
+        data = data[:, 0]  # tylko pierwszy kanał
+
+    adpcm = SimpleADPCM(bitrate=32)
+    encoded = adpcm.encode(data)
+
+    decoder = SimpleADPCM(bitrate=32)
+    decoded = decoder.decode(encoded)
+
+
+
+    t = np.arange(len(data)) / rate
+    plt.figure(figsize=(12, 6))
+
+    plt.subplot(2,1,1)
+    plt.plot(t, data)
+    plt.title("Oryginalny sygnał")
+    plt.grid()
+
+    plt.subplot(2,1,2)
+    plt.plot(t, decoded, color='orange')
+    plt.title("Sygnał po kodowaniu i dekodowaniu ADPCM")
+    plt.grid()
+
+    plt.tight_layout()
+    plt.show()
