@@ -12,7 +12,7 @@ class SimpleADPCM:
             raise ValueError("Obsługiwane: 16 lub 32 kbps")
 
         self.step = 1000.0    # krok kwantyzacji
-        self.pred = 0.0       # predyktor
+        self.a = 0.0       # predyktor
 
     def quantize(self, diff):
         level = int(round((diff / self.step) + (self.levels - 1) / 2))
@@ -24,14 +24,14 @@ class SimpleADPCM:
     def encode(self, samples):
         encoded = []
         for s in samples:
-            diff = float(s) - self.pred
+            diff = float(s) - self.a
             q = self.quantize(diff)
             dq = self.dequantize(q)
 
-            self.pred += dq
-            self.pred = np.clip(self.pred, -32768, 32767)
+            self.a += dq
+            self.a = np.clip(self.a, -32768, 32767)
 
-            # adaptacja kroku
+            # major think for ADCPM !!!!
             self.step = 0.9 * self.step + 0.1 * abs(dq)
             self.step = max(self.step, 1.0)
 
@@ -42,9 +42,9 @@ class SimpleADPCM:
         decoded = []
         for q in encoded:
             dq = self.dequantize(q)
-            s = self.pred + dq
+            s = self.a + dq
             s = np.clip(s, -32768, 32767)
-            self.pred = s
+            self.a = s
 
             # adaptacja kroku
             self.step = 0.9 * self.step + 0.1 * abs(dq)
@@ -63,8 +63,6 @@ if __name__ == "__main__":
 
     decoder = SimpleADPCM(bitrate=32)
     decoded = decoder.decode(encoded)
-
-
 
     t = np.arange(len(data)) / rate
     plt.figure(figsize=(12, 6))
